@@ -1,8 +1,8 @@
 export const INITIAL_FAMILY_MEMBERS = [
+  { id: 'family', name: 'Family', color: '#f4a261', icon: '🏡', role: 'Everyone' },
   { id: 'mom', name: 'Mom', color: '#e07a5f', icon: '🌸', role: 'Head Chef' },
   { id: 'dad', name: 'Dad', color: '#3d405b', icon: '👨‍🍳', role: 'Sous Chef' },
-  { id: 'kids', name: 'Kids', color: '#81b29a', icon: '🐥', role: 'Helper' },
-  { id: 'family', name: 'Family', color: '#f4a261', icon: '🏡', role: 'Everyone' }
+  { id: 'kids', name: 'Kids', color: '#81b29a', icon: '🐥', role: 'Helper' }
 ];
 
 export const INITIAL_RECIPES = [
@@ -41,7 +41,7 @@ export const INITIAL_RECIPES = [
     id: 'rec-meatball-mushroom-stew',
     title: 'Hearty Meatball and Mushroom Stew (Hello Fresh)',
     category: 'Dinner',
-    defaultCook: 'Dad',
+    defaultCook: 'Family',
     prepTime: '20m',
     cookTime: '30m',
     servings: 4,
@@ -104,7 +104,7 @@ export const INITIAL_RECIPES = [
     id: 'rec-1',
     title: 'Fluffy Pancakes & Berries',
     category: 'Breakfast',
-    defaultCook: 'Mom',
+    defaultCook: 'Family',
     prepTime: '15m',
     cookTime: '15m',
     servings: 4,
@@ -133,7 +133,7 @@ export const INITIAL_RECIPES = [
     id: 'rec-2',
     title: 'Miso Soup & Onigiri',
     category: 'Breakfast',
-    defaultCook: 'Dad',
+    defaultCook: 'Family',
     prepTime: '10m',
     cookTime: '10m',
     servings: 4,
@@ -162,7 +162,7 @@ export const INITIAL_RECIPES = [
     id: 'rec-3',
     title: 'Fluffy Soup & Bread Rolls',
     category: 'Breakfast',
-    defaultCook: 'Dad',
+    defaultCook: 'Family',
     prepTime: '15m',
     cookTime: '20m',
     servings: 4,
@@ -189,7 +189,7 @@ export const INITIAL_RECIPES = [
     id: 'rec-4',
     title: 'Veggie Ramen',
     category: 'Lunch',
-    defaultCook: 'Kids',
+    defaultCook: 'Family',
     prepTime: '10m',
     cookTime: '15m',
     servings: 4,
@@ -217,7 +217,7 @@ export const INITIAL_RECIPES = [
     id: 'rec-5',
     title: 'Chicken Salad Sandwich',
     category: 'Lunch',
-    defaultCook: 'Mom',
+    defaultCook: 'Family',
     prepTime: '10m',
     cookTime: '0m',
     servings: 4,
@@ -243,7 +243,7 @@ export const INITIAL_RECIPES = [
     id: 'rec-6',
     title: 'Elmon Picnic Sandwich',
     category: 'Lunch',
-    defaultCook: 'Dad',
+    defaultCook: 'Family',
     prepTime: '5m',
     cookTime: '0m',
     servings: 4,
@@ -268,7 +268,7 @@ export const INITIAL_RECIPES = [
     id: 'rec-7',
     title: 'Hearty Beef Stew',
     category: 'Dinner',
-    defaultCook: 'Dad',
+    defaultCook: 'Family',
     prepTime: '25m',
     cookTime: '60m',
     servings: 6,
@@ -348,6 +348,7 @@ export const INITIAL_RECIPES = [
 ];
 
 // Week starting Monday, July 27, 2026
+// All meals assigned to "Family", EXCEPT Monday Dinner assigned to "Mom"
 export const INITIAL_DAYS = [
   {
     dayIndex: 0,
@@ -355,8 +356,8 @@ export const INITIAL_DAYS = [
     dateNum: '27',
     fullDate: '2026-07-27',
     meals: {
-      breakfast: { title: 'Fluffy Pancakes & Berries', cook: 'Mom', recipeId: 'rec-1', favorite: true, imageEmoji: '🥞' },
-      lunch: { title: 'Veggie Ramen', cook: 'Kids', recipeId: 'rec-4', favorite: true, imageEmoji: '🍜' },
+      breakfast: { title: 'Fluffy Pancakes & Berries', cook: 'Family', recipeId: 'rec-1', favorite: true, imageEmoji: '🥞' },
+      lunch: { title: 'Veggie Ramen', cook: 'Family', recipeId: 'rec-4', favorite: true, imageEmoji: '🍜' },
       dinner: { title: 'Maple-Curry Pork Chops (goodfood)', cook: 'Mom', recipeId: 'rec-maple-curry-pork-chops', favorite: true, imageEmoji: '🥩', recipeUrl: 'https://www.makegoodfood.ca/' }
     }
   },
@@ -366,9 +367,9 @@ export const INITIAL_DAYS = [
     dateNum: '28',
     fullDate: '2026-07-28',
     meals: {
-      breakfast: { title: 'Miso Soup & Onigiri', cook: 'Dad', recipeId: 'rec-2', favorite: true, imageEmoji: '🍙' },
-      lunch: { title: 'Chicken Salad Sandwich', cook: 'Mom', recipeId: 'rec-5', favorite: true, imageEmoji: '🥪' },
-      dinner: { title: 'Hearty Meatball and Mushroom Stew (Hello Fresh)', cook: 'Dad', recipeId: 'rec-meatball-mushroom-stew', favorite: true, imageEmoji: '🧆', recipeUrl: 'https://www.hellofresh.com/' }
+      breakfast: { title: 'Miso Soup & Onigiri', cook: 'Family', recipeId: 'rec-2', favorite: true, imageEmoji: '🍙' },
+      lunch: { title: 'Chicken Salad Sandwich', cook: 'Family', recipeId: 'rec-5', favorite: true, imageEmoji: '🥪' },
+      dinner: { title: 'Hearty Meatball and Mushroom Stew (Hello Fresh)', cook: 'Family', recipeId: 'rec-meatball-mushroom-stew', favorite: true, imageEmoji: '🧆', recipeUrl: 'https://www.hellofresh.com/' }
     }
   },
   {
@@ -377,8 +378,8 @@ export const INITIAL_DAYS = [
     dateNum: '29',
     fullDate: '2026-07-29',
     meals: {
-      breakfast: { title: 'Fluffy Pancakes & Berries', cook: 'Mom', recipeId: 'rec-1', favorite: true, imageEmoji: '🥞' },
-      lunch: { title: 'Veggie Ramen', cook: 'Kids', recipeId: 'rec-4', favorite: true, imageEmoji: '🍜' },
+      breakfast: { title: 'Fluffy Pancakes & Berries', cook: 'Family', recipeId: 'rec-1', favorite: true, imageEmoji: '🥞' },
+      lunch: { title: 'Veggie Ramen', cook: 'Family', recipeId: 'rec-4', favorite: true, imageEmoji: '🍜' },
       dinner: { title: 'Pork and Apple Burger (Hello Fresh)', cook: 'Family', recipeId: 'rec-pork-apple-burger', favorite: true, imageEmoji: '🍔', recipeUrl: 'https://www.hellofresh.com/' }
     }
   },
@@ -388,8 +389,8 @@ export const INITIAL_DAYS = [
     dateNum: '30',
     fullDate: '2026-07-30',
     meals: {
-      breakfast: { title: 'Fluffy Soup & Bread Rolls', cook: 'Dad', recipeId: 'rec-3', favorite: true, imageEmoji: '🍲' },
-      lunch: { title: 'Chicken Salad Sandwich', cook: 'Mom', recipeId: 'rec-5', favorite: true, imageEmoji: '🥪' },
+      breakfast: { title: 'Fluffy Soup & Bread Rolls', cook: 'Family', recipeId: 'rec-3', favorite: true, imageEmoji: '🍲' },
+      lunch: { title: 'Chicken Salad Sandwich', cook: 'Family', recipeId: 'rec-5', favorite: true, imageEmoji: '🥪' },
       dinner: { title: 'Homemade Pizza Night', cook: 'Family', recipeId: 'rec-8', favorite: true, imageEmoji: '🍕' }
     }
   },
@@ -399,8 +400,8 @@ export const INITIAL_DAYS = [
     dateNum: '31',
     fullDate: '2026-07-31',
     meals: {
-      breakfast: { title: 'Fluffy Pancakes & Berries', cook: 'Mom', recipeId: 'rec-1', favorite: true, imageEmoji: '🥞' },
-      lunch: { title: 'Elmon Picnic Sandwich', cook: 'Dad', recipeId: 'rec-6', favorite: true, imageEmoji: '🥪' },
+      breakfast: { title: 'Fluffy Pancakes & Berries', cook: 'Family', recipeId: 'rec-1', favorite: true, imageEmoji: '🥞' },
+      lunch: { title: 'Elmon Picnic Sandwich', cook: 'Family', recipeId: 'rec-6', favorite: true, imageEmoji: '🥪' },
       dinner: { title: 'Eventy Salmon Bento', cook: 'Family', recipeId: 'rec-9', favorite: true, imageEmoji: '🍱' }
     }
   },
@@ -410,9 +411,9 @@ export const INITIAL_DAYS = [
     dateNum: '1',
     fullDate: '2026-08-01',
     meals: {
-      breakfast: { title: 'Miso Soup & Onigiri', cook: 'Dad', recipeId: 'rec-2', favorite: true, imageEmoji: '🍙' },
-      lunch: { title: 'Elmon Picnic Sandwich', cook: 'Dad', recipeId: 'rec-6', favorite: true, imageEmoji: '🥪' },
-      dinner: { title: 'Hearty Beef Stew', cook: 'Dad', recipeId: 'rec-7', favorite: true, imageEmoji: '🍲' }
+      breakfast: { title: 'Miso Soup & Onigiri', cook: 'Family', recipeId: 'rec-2', favorite: true, imageEmoji: '🍙' },
+      lunch: { title: 'Elmon Picnic Sandwich', cook: 'Family', recipeId: 'rec-6', favorite: true, imageEmoji: '🥪' },
+      dinner: { title: 'Hearty Beef Stew', cook: 'Family', recipeId: 'rec-7', favorite: true, imageEmoji: '🍲' }
     }
   },
   {
@@ -421,9 +422,9 @@ export const INITIAL_DAYS = [
     dateNum: '2',
     fullDate: '2026-08-02',
     meals: {
-      breakfast: { title: 'Fluffy Pancakes & Berries', cook: 'Mom', recipeId: 'rec-1', favorite: true, imageEmoji: '🥞' },
-      lunch: { title: 'Veggie Ramen', cook: 'Kids', recipeId: 'rec-4', favorite: true, imageEmoji: '🍜' },
-      dinner: { title: 'Maple-Curry Pork Chops (goodfood)', cook: 'Mom', recipeId: 'rec-maple-curry-pork-chops', favorite: true, imageEmoji: '🥩', recipeUrl: 'https://www.makegoodfood.ca/' }
+      breakfast: { title: 'Fluffy Pancakes & Berries', cook: 'Family', recipeId: 'rec-1', favorite: true, imageEmoji: '🥞' },
+      lunch: { title: 'Veggie Ramen', cook: 'Family', recipeId: 'rec-4', favorite: true, imageEmoji: '🍜' },
+      dinner: { title: 'Maple-Curry Pork Chops (goodfood)', cook: 'Family', recipeId: 'rec-maple-curry-pork-chops', favorite: true, imageEmoji: '🥩', recipeUrl: 'https://www.makegoodfood.ca/' }
     }
   }
 ];

@@ -52,14 +52,12 @@ export const PlannerProvider = ({ children }) => {
   const [isScannerModalOpen, setIsScannerModalOpen] = useState(false);
   const [scannerTargetSlot, setScannerTargetSlot] = useState(null);
 
-  // Week Days Plan State
+  // Week Days Plan State (Default: all meals Family, except Mon Dinner Mom)
   const [weeklyPlan, setWeeklyPlan] = useState(() => {
-    const saved = localStorage.getItem('family_kitchen_weekly_plan');
+    const saved = localStorage.getItem('family_kitchen_weekly_plan_v2');
     if (saved) {
       try {
-        const parsed = JSON.parse(saved);
-        const hasJuly27Pork = parsed.some((d) => d.meals?.dinner?.recipeId === 'rec-maple-curry-pork-chops');
-        if (hasJuly27Pork) return parsed;
+        return JSON.parse(saved);
       } catch (e) {
         console.error(e);
       }
@@ -69,12 +67,10 @@ export const PlannerProvider = ({ children }) => {
 
   // Recipe Library State
   const [recipes, setRecipes] = useState(() => {
-    const saved = localStorage.getItem('family_kitchen_recipes');
+    const saved = localStorage.getItem('family_kitchen_recipes_v2');
     if (saved) {
       try {
-        const parsed = JSON.parse(saved);
-        const hasMaplePork = parsed.some((r) => r.id === 'rec-maple-curry-pork-chops');
-        if (hasMaplePork) return parsed;
+        return JSON.parse(saved);
       } catch (e) {
         console.error(e);
       }
@@ -112,11 +108,11 @@ export const PlannerProvider = ({ children }) => {
 
   // Save to LocalStorage
   useEffect(() => {
-    localStorage.setItem('family_kitchen_weekly_plan', JSON.stringify(weeklyPlan));
+    localStorage.setItem('family_kitchen_weekly_plan_v2', JSON.stringify(weeklyPlan));
   }, [weeklyPlan]);
 
   useEffect(() => {
-    localStorage.setItem('family_kitchen_recipes', JSON.stringify(recipes));
+    localStorage.setItem('family_kitchen_recipes_v2', JSON.stringify(recipes));
   }, [recipes]);
 
   useEffect(() => {
@@ -213,7 +209,7 @@ export const PlannerProvider = ({ children }) => {
     if (dayIndex !== null && dayIndex !== undefined && mealType) {
       updateMealInPlan(dayIndex, mealType, {
         title: recipeWithId.title,
-        cook: recipeWithId.defaultCook || 'Mom',
+        cook: recipeWithId.defaultCook || 'Family',
         recipeId: recipeWithId.id,
         favorite: true,
         imageEmoji: recipeWithId.imageEmoji || '🍲',

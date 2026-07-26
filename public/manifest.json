@@ -15,8 +15,8 @@
       "purpose": "maskable"
     }
   ],
-  "start_url": "./index.html",
-  "scope": "./",
+  "start_url": "/meal/",
+  "scope": "/meal/",
   "background_color": "#fdf8f5",
   "theme_color": "#588157",
   "display": "standalone",

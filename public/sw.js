@@ -1,15 +1,15 @@
-const CACHE_NAME = 'family-kitchen-v3';
+const CACHE_NAME = 'family-kitchen-v4';
 const PRECACHE_ASSETS = [
-  './',
-  './index.html',
-  './manifest.json',
-  './ramen_icon.jpg'
+  '/meal/',
+  '/meal/index.html',
+  '/meal/manifest.json',
+  '/meal/ramen_icon.jpg'
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(PRECACHE_ASSETS).catch((err) => console.log('Precache error:', err));
+      return cache.addAll(PRECACHE_ASSETS).catch((err) => console.log('Precache warning:', err));
     })
   );
   self.skipWaiting();
@@ -36,7 +36,6 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
-        // Fetch background update
         fetch(event.request).then((networkResponse) => {
           if (networkResponse && networkResponse.status === 200) {
             caches.open(CACHE_NAME).then((cache) => {
@@ -55,6 +54,8 @@ self.addEventListener('fetch', (event) => {
           });
         }
         return networkResponse;
+      }).catch(() => {
+        return caches.match('/meal/');
       });
     })
   );

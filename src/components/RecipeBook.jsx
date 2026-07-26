@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { usePlanner } from '../context/PlannerContext';
-import { Search, Plus, Heart, Clock, Users, BookOpen, Camera, Sparkles } from 'lucide-react';
+import { Search, Plus, Heart, Clock, Users, BookOpen, Camera, Trash2, Sparkles } from 'lucide-react';
 
 export const RecipeBook = () => {
-  const { recipes, toggleRecipeFavorite, setSelectedRecipeModal, addRecipe, setIsScannerModalOpen } = usePlanner();
+  const { recipes, toggleRecipeFavorite, setSelectedRecipeModal, addRecipe, deleteRecipe, setIsScannerModalOpen } = usePlanner();
 
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
@@ -34,6 +34,13 @@ export const RecipeBook = () => {
 
     return matchesCategory && matchesSearch;
   });
+
+  const handleDeleteClick = (e, recipe) => {
+    e.stopPropagation();
+    if (window.confirm(`Are you sure you want to delete "${recipe.title}"?`)) {
+      deleteRecipe(recipe.id);
+    }
+  };
 
   const handleCreateRecipe = (e) => {
     e.preventDefault();
@@ -129,16 +136,27 @@ export const RecipeBook = () => {
           >
             <div className="recipe-card-top">
               <span className="recipe-emoji-badge">{recipe.imageEmoji || '🍲'}</span>
-              <button
-                className={`card-heart-btn ${recipe.isFavorite ? 'fav' : ''}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleRecipeFavorite(recipe.id);
-                }}
-                title="Favorite Recipe"
-              >
-                <Heart size={18} fill={recipe.isFavorite ? '#e63946' : 'none'} color={recipe.isFavorite ? '#e63946' : '#888'} />
-              </button>
+              
+              <div className="recipe-card-top-actions">
+                <button
+                  className={`card-heart-btn ${recipe.isFavorite ? 'fav' : ''}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleRecipeFavorite(recipe.id);
+                  }}
+                  title="Favorite Recipe"
+                >
+                  <Heart size={18} fill={recipe.isFavorite ? '#e63946' : 'none'} color={recipe.isFavorite ? '#e63946' : '#888'} />
+                </button>
+
+                <button
+                  className="card-delete-btn"
+                  onClick={(e) => handleDeleteClick(e, recipe)}
+                  title="Delete Recipe"
+                >
+                  <Trash2 size={16} color="#e63946" />
+                </button>
+              </div>
             </div>
 
             <div className="recipe-card-content">

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { usePlanner } from '../context/PlannerContext';
-import { ChefHat, Heart, Camera, ExternalLink, Clock, Users, Link as LinkIcon } from 'lucide-react';
+import { ChefHat, Heart, Camera, ExternalLink, Clock, Users, Link as LinkIcon, Trash2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export const MealEditModal = () => {
@@ -159,7 +159,7 @@ export const MealEditModal = () => {
 };
 
 export const RecipeDetailModal = () => {
-  const { selectedRecipeModal, setSelectedRecipeModal } = usePlanner();
+  const { selectedRecipeModal, setSelectedRecipeModal, deleteRecipe } = usePlanner();
 
   if (!selectedRecipeModal) return null;
 
@@ -168,6 +168,13 @@ export const RecipeDetailModal = () => {
   const handleOpenExternalUrl = () => {
     if (rec.recipeUrl) {
       window.open(rec.recipeUrl, '_blank', 'noopener,noreferrer');
+    }
+  };
+
+  const handleDeleteRecipeModal = () => {
+    if (window.confirm(`Are you sure you want to delete "${rec.title}"?`)) {
+      deleteRecipe(rec.id);
+      setSelectedRecipeModal(null);
     }
   };
 
@@ -235,7 +242,14 @@ export const RecipeDetailModal = () => {
           )}
         </div>
 
-        <div className="modal-actions-row">
+        <div className="modal-actions-row" style={{ justifyContent: 'space-between' }}>
+          {rec.id && (
+            <button className="btn-delete-recipe" onClick={handleDeleteRecipeModal}>
+              <Trash2 size={16} />
+              <span>Delete Recipe</span>
+            </button>
+          )}
+
           <button className="btn-submit" onClick={() => setSelectedRecipeModal(null)}>
             Done ✨
           </button>

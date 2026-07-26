@@ -196,6 +196,13 @@ export const PlannerProvider = ({ children }) => {
     return recipeWithId;
   };
 
+  const deleteRecipe = (recipeId) => {
+    setRecipes((prev) => prev.filter((r) => r.id !== recipeId));
+    if (selectedRecipeModal?.id === recipeId) {
+      setSelectedRecipeModal(null);
+    }
+  };
+
   const addScannedRecipeAndAssign = (scannedRecipe, dayIndex = null, mealType = null) => {
     const recipeWithId = {
       ...scannedRecipe,
@@ -292,6 +299,7 @@ export const PlannerProvider = ({ children }) => {
         toggleFavoriteMeal,
         toggleRecipeFavorite,
         addRecipe,
+        deleteRecipe,
         addScannedRecipeAndAssign,
         toggleShoppingCheck,
         addCustomShoppingItem,

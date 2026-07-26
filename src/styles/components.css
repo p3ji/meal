@@ -803,11 +803,50 @@
   justify-content: center;
 }
 
-.card-heart-btn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
+.recipe-card-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
+
+.card-heart-btn, .card-delete-btn {
+  background: #fdf8f2;
+  border: 1px solid #d4c5b3;
+  border-radius: 8px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.15s;
+}
+
+.card-heart-btn:hover, .card-delete-btn:hover {
+  background: #f4ece1;
+  transform: scale(1.08);
+}
+
+.btn-delete-recipe {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1.5px solid #fca5a5;
+  padding: 8px 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-family: var(--font-main);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-delete-recipe:hover {
+  background: #fca5a5;
+  color: #991b1b;
+}
+
 
 .recipe-category-tag {
   font-size: 0.72rem;

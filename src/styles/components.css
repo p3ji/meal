@@ -1,19 +1,247 @@
-/* GHIBLI KITCHEN - COMPONENTS & LAYOUT CSS */
-
-/* WEEKLY PLANNER GRID (Matching Reference Image Layout) */
-.weekly-planner-container {
+/* DAY-BASED WEEKLY PLANNER GRID (Ordered by Day) */
+.days-planner-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 16px;
   align-items: start;
 }
 
-@media (max-width: 900px) {
-  .weekly-planner-container {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
+.day-planner-card {
+  background: #ffffff;
+  border: 3px solid #332d29;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.07);
+  transition: transform 0.15s ease;
 }
+
+.day-planner-card:hover {
+  transform: translateY(-2px);
+}
+
+.day-card-header {
+  background: linear-gradient(135deg, #f7ce86 0%, #f4a261 100%);
+  border-bottom: 2.5px solid #332d29;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.day-header-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.day-badge-name {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #3d2b1f;
+}
+
+.day-badge-date {
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 2px 8px;
+  border-radius: 10px;
+  color: #593c21;
+}
+
+.day-header-decor {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #7a3e14;
+}
+
+.day-meals-group {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.slot-meal-row {
+  background: #fcfaf7;
+  border: 1.5px solid #d4c5b3;
+  border-radius: 12px;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.slot-meal-row:hover {
+  background: #fff6e8;
+  border-color: #e07a5f;
+}
+
+.slot-type-pill {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 6px;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+.b-pill { background: #dcecdb; color: #3a5737; }
+.l-pill { background: #fceecb; color: #7a3e14; }
+.d-pill { background: #1c2b4e; color: #ffffff; }
+
+.slot-meal-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+}
+
+.slot-emoji {
+  font-size: 1.3rem;
+}
+
+.slot-text-block {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.slot-meal-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #2b241c;
+}
+
+.slot-cook-tag {
+  font-size: 0.72rem;
+  color: #786a5c;
+}
+
+.slot-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.slot-action-btn {
+  background: #ffffff;
+  border: 1px solid #c4b8aa;
+  border-radius: 6px;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.slot-action-btn:hover {
+  background: #f4ece1;
+  transform: scale(1.08);
+}
+
+/* PROMPT BANNERS FOR SCANNING & URL IN MODALS */
+.slot-scan-prompt-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff4ec;
+  border: 2px dashed #e07a5f;
+  border-radius: 14px;
+  padding: 10px 14px;
+}
+
+.prompt-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.prompt-text strong {
+  font-size: 0.9rem;
+  color: #7a3810;
+}
+
+.prompt-text span {
+  font-size: 0.78rem;
+  color: #8c644d;
+}
+
+.btn-slot-scan {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #e07a5f;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-family: var(--font-main);
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon-left {
+  position: absolute;
+  left: 10px;
+}
+
+.input-padded-left {
+  padding-left: 34px !important;
+  width: 100%;
+}
+
+.external-link-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #eaf6f4;
+  border: 1.5px solid #2a9d8f;
+  border-radius: 12px;
+  padding: 10px 14px;
+  gap: 10px;
+}
+
+.external-link-banner strong {
+  font-size: 0.85rem;
+  color: #1f7369;
+}
+
+.external-link-banner p {
+  font-size: 0.75rem;
+  color: #4a6662;
+  word-break: break-all;
+}
+
+.btn-open-website-link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #2a9d8f;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
 
 .meal-column {
   border-radius: 20px;

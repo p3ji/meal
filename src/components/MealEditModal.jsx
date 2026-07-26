@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { usePlanner } from '../context/PlannerContext';
-import { ChefHat, Heart, Sparkles, BookOpen, Clock, Users } from 'lucide-react';
+import { ChefHat, Heart, Camera, ExternalLink, Clock, Users, Link as LinkIcon } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export const MealEditModal = () => {
@@ -9,17 +9,21 @@ export const MealEditModal = () => {
     setEditingMealSlot,
     updateMealInPlan,
     recipes,
-    familyMembers
+    familyMembers,
+    openScanForSlot
   } = usePlanner();
 
   if (!editingMealSlot) return null;
 
   const { dayIndex, mealType, currentMeal } = editingMealSlot;
 
+  const foundRecipe = recipes.find((r) => r.id === currentMeal?.recipeId || r.title === currentMeal?.title);
+
   const [selectedRecipeId, setSelectedRecipeId] = useState(currentMeal?.recipeId || '');
   const [customTitle, setCustomTitle] = useState(currentMeal?.title || '');
   const [cook, setCook] = useState(currentMeal?.cook || 'Family');
   const [emoji, setEmoji] = useState(currentMeal?.imageEmoji || '🍱');
+  const [recipeUrl, setRecipeUrl] = useState(currentMeal?.recipeUrl || foundRecipe?.recipeUrl || '');
 
   const handleSelectRecipe = (recId) => {
     setSelectedRecipeId(recId);
@@ -28,7 +32,13 @@ export const MealEditModal = () => {
       setCustomTitle(rec.title);
       setCook(rec.defaultCook || 'Family');
       setEmoji(rec.imageEmoji || '🍱');
+      if (rec.recipeUrl) setRecipeUrl(rec.recipeUrl);
     }
+  };
+
+  const handleScanClick = () => {
+    setEditingMealSlot(null);
+    openScanForSlot(dayIndex, mealType);
   };
 
   const handleSave = (e) => {
@@ -38,7 +48,8 @@ export const MealEditModal = () => {
       cook: cook || 'Family',
       recipeId: selectedRecipeId || null,
       favorite: currentMeal?.favorite || false,
-      imageEmoji: emoji || '🍽️'
+      imageEmoji: emoji || '🍽️',
+      recipeUrl: recipeUrl.trim() || null
     };
 
     updateMealInPlan(dayIndex, mealType, updatedMeal);
@@ -56,7 +67,19 @@ export const MealEditModal = () => {
           <button className="close-modal-btn" onClick={() => setEditingMealSlot(null)}>✕</button>
         </div>
 
-        <form onSubmit={handleSave} className="edit-meal-form">
+        {/* QUICK ACTION: SCAN RECIPE CARD PHOTO DIRECTLY */}
+        <div className="slot-scan-prompt-banner">
+          <div className="prompt-text">
+            <strong>📷 Snap / Upload Recipe Card</strong>
+            <span>Pre-fills title, ingredients & instructions from photo!</span>
+          </div>
+          <button type="button" className="btn-slot-scan" onClick={handleScanClick}>
+            <Camera size={16} />
+            <span>Scan Photo</span>
+          </button>
+        </div>
+
+        <form onSubmit={handleSave} className="edit-meal-form" style={{ marginTop: '14px' }}>
           <div className="form-group">
             <label>Select from Recipe Library</label>
             <select
@@ -80,8 +103,22 @@ export const MealEditModal = () => {
               required
               value={customTitle}
               onChange={(e) => setCustomTitle(e.target.value)}
-              placeholder="e.g. Hearty Beef Stew"
+              placeholder="e.g. Maple-Curry Pork Chops"
             />
+          </div>
+
+          <div className="form-group">
+            <label>Recipe Website Link / URL (Optional)</label>
+            <div className="input-with-icon">
+              <LinkIcon size={16} color="#888" className="input-icon-left" />
+              <input
+                type="url"
+                value={recipeUrl}
+                onChange={(e) => setRecipeUrl(e.target.value)}
+                placeholder="https://www.goodfood.ca/recipe/... or HelloFresh URL"
+                className="input-padded-left"
+              />
+            </div>
           </div>
 
           <div className="form-row">
@@ -128,6 +165,12 @@ export const RecipeDetailModal = () => {
 
   const rec = selectedRecipeModal;
 
+  const handleOpenExternalUrl = () => {
+    if (rec.recipeUrl) {
+      window.open(rec.recipeUrl, '_blank', 'noopener,noreferrer');
+    }
+  };
+
   return (
     <div className="modal-backdrop" onClick={() => setSelectedRecipeModal(null)}>
       <div className="modal-content cute-modal recipe-detail-modal" onClick={(e) => e.stopPropagation()}>
@@ -150,6 +193,20 @@ export const RecipeDetailModal = () => {
             <span><ChefHat size={15} /> Cook: {rec.cookTime || '15m'}</span>
             <span><Users size={15} /> Serves {rec.servings || 4}</span>
           </div>
+
+          {/* External Website Recipe Link Button */}
+          {rec.recipeUrl && (
+            <div className="external-link-banner">
+              <div>
+                <strong>🌐 Website Recipe Link Available</strong>
+                <p>{rec.recipeUrl}</p>
+              </div>
+              <button className="btn-open-website-link" onClick={handleOpenExternalUrl}>
+                <ExternalLink size={16} />
+                <span>Open Recipe</span>
+              </button>
+            </div>
+          )}
 
           {rec.ingredients && (
             <div className="detail-section">

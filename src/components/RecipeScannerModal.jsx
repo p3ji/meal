@@ -1,11 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { createWorker } from 'tesseract.js';
 import { usePlanner } from '../context/PlannerContext';
-import { Camera, Upload, Sparkles, Check, RefreshCw, Clock, ChefHat, ShoppingBag, Utensils, X } from 'lucide-react';
+import { Camera, Upload, Sparkles, Check, RefreshCw, Clock, ChefHat, ShoppingBag, Link as LinkIcon, X } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export const RecipeScannerModal = ({ isOpen, onClose }) => {
-  const { weeklyPlan, addScannedRecipeAndAssign, familyMembers } = usePlanner();
+  const { weeklyPlan, addScannedRecipeAndAssign, familyMembers, scannerTargetSlot } = usePlanner();
 
   const fileInputRef = useRef(null);
   const cameraInputRef = useRef(null);
@@ -23,6 +23,7 @@ export const RecipeScannerModal = ({ isOpen, onClose }) => {
   const [prepTime, setPrepTime] = useState('15m');
   const [cookTime, setCookTime] = useState('20m');
   const [emoji, setEmoji] = useState('🥘');
+  const [recipeUrl, setRecipeUrl] = useState('');
   const [description, setDescription] = useState('');
   const [ingredientsStr, setIngredientsStr] = useState('');
   const [instructionsStr, setInstructionsStr] = useState('');
@@ -31,6 +32,14 @@ export const RecipeScannerModal = ({ isOpen, onClose }) => {
   const [assignToPlan, setAssignToPlan] = useState(true);
   const [selectedDayIndex, setSelectedDayIndex] = useState(0); // Default Mon (July 27)
   const [selectedMealType, setSelectedMealType] = useState('dinner');
+
+  useEffect(() => {
+    if (scannerTargetSlot) {
+      setSelectedDayIndex(scannerTargetSlot.dayIndex);
+      setSelectedMealType(scannerTargetSlot.mealType);
+      setAssignToPlan(true);
+    }
+  }, [scannerTargetSlot]);
 
   if (!isOpen) return null;
 
@@ -208,6 +217,7 @@ export const RecipeScannerModal = ({ isOpen, onClose }) => {
       rating: 5,
       isFavorite: true,
       imageEmoji: emoji,
+      recipeUrl: recipeUrl.trim() || null,
       description: description || `Delicious scanned ${title} recipe.`,
       ingredients: parsedIngredients.length > 0 ? parsedIngredients : [{ name: title, amount: '1', category: 'Pantry' }],
       instructions: parsedInstructions.length > 0 ? parsedInstructions : ['Prepare and cook with care!']
@@ -229,6 +239,7 @@ export const RecipeScannerModal = ({ isOpen, onClose }) => {
     setScannedData(null);
     setIsScanning(false);
     setScanProgress(0);
+    setRecipeUrl('');
   };
 
   return (
@@ -344,6 +355,20 @@ export const RecipeScannerModal = ({ isOpen, onClose }) => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
+            </div>
+
+            <div className="form-group">
+              <label>Recipe Website Link / URL (Optional)</label>
+              <div className="input-with-icon">
+                <LinkIcon size={16} color="#888" className="input-icon-left" />
+                <input
+                  type="url"
+                  value={recipeUrl}
+                  onChange={(e) => setRecipeUrl(e.target.value)}
+                  placeholder="https://www.goodfood.ca/recipe/... or HelloFresh link"
+                  className="input-padded-left"
+                />
+              </div>
             </div>
 
             <div className="form-row">

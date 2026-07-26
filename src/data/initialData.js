@@ -17,6 +17,7 @@ export const INITIAL_RECIPES = [
     rating: 5,
     isFavorite: true,
     imageEmoji: '🥩',
+    recipeUrl: 'https://www.makegoodfood.ca/',
     description: 'Juicy pork chops seared to golden perfection and glazed with a sweet maple syrup and warm curry spice glaze. Sourced from GoodFood.',
     ingredients: [
       { name: 'Pork Chops', amount: '4 thick bone-in or boneless chops', category: 'Meat' },
@@ -47,6 +48,7 @@ export const INITIAL_RECIPES = [
     rating: 5,
     isFavorite: true,
     imageEmoji: '🧆',
+    recipeUrl: 'https://www.hellofresh.com/',
     description: 'Savory handmade beef meatballs and earthy cremini mushrooms simmered in a rich garlic herb cream sauce. Sourced from Hello Fresh.',
     ingredients: [
       { name: 'Ground Beef', amount: '1 lb', category: 'Meat' },
@@ -78,6 +80,7 @@ export const INITIAL_RECIPES = [
     rating: 5,
     isFavorite: true,
     imageEmoji: '🍔',
+    recipeUrl: 'https://www.hellofresh.com/',
     description: 'Gourmet juicy pork patties infused with grated sweet crisp apple, topped with melted sharp cheddar and sage mayo on toasted brioche buns. Sourced from Hello Fresh.',
     ingredients: [
       { name: 'Ground Pork', amount: '1 lb', category: 'Meat' },
@@ -93,7 +96,7 @@ export const INITIAL_RECIPES = [
       'Grate Honeycrisp apple finely and squeeze out excess juice with a clean paper towel.',
       'In a large bowl, combine ground pork, squeezed grated apple, minced sage, garlic powder, salt, and black pepper. Form into 4 round burger patties.',
       'Heat a skillet with 1 tbsp oil over medium-high heat. Cook patties 5-6 minutes per side until cooked through (160°F). Top with cheddar slices to melt.',
-      'Lightly toast brioche buns. Stir remaining minced sage into mayonnaise.',
+      'Lightly toast brioche buns and mix mayo with remaining sage.',
       'Spread sage mayo on buns, assemble with juicy pork apple patties and fresh baby arugula. Serve with crispy potato wedges!'
     ]
   },
@@ -354,7 +357,7 @@ export const INITIAL_DAYS = [
     meals: {
       breakfast: { title: 'Fluffy Pancakes & Berries', cook: 'Mom', recipeId: 'rec-1', favorite: true, imageEmoji: '🥞' },
       lunch: { title: 'Veggie Ramen', cook: 'Kids', recipeId: 'rec-4', favorite: true, imageEmoji: '🍜' },
-      dinner: { title: 'Maple-Curry Pork Chops (goodfood)', cook: 'Mom', recipeId: 'rec-maple-curry-pork-chops', favorite: true, imageEmoji: '🥩' }
+      dinner: { title: 'Maple-Curry Pork Chops (goodfood)', cook: 'Mom', recipeId: 'rec-maple-curry-pork-chops', favorite: true, imageEmoji: '🥩', recipeUrl: 'https://www.makegoodfood.ca/' }
     }
   },
   {
@@ -365,7 +368,7 @@ export const INITIAL_DAYS = [
     meals: {
       breakfast: { title: 'Miso Soup & Onigiri', cook: 'Dad', recipeId: 'rec-2', favorite: true, imageEmoji: '🍙' },
       lunch: { title: 'Chicken Salad Sandwich', cook: 'Mom', recipeId: 'rec-5', favorite: true, imageEmoji: '🥪' },
-      dinner: { title: 'Hearty Meatball and Mushroom Stew (Hello Fresh)', cook: 'Dad', recipeId: 'rec-meatball-mushroom-stew', favorite: true, imageEmoji: '🧆' }
+      dinner: { title: 'Hearty Meatball and Mushroom Stew (Hello Fresh)', cook: 'Dad', recipeId: 'rec-meatball-mushroom-stew', favorite: true, imageEmoji: '🧆', recipeUrl: 'https://www.hellofresh.com/' }
     }
   },
   {
@@ -376,7 +379,7 @@ export const INITIAL_DAYS = [
     meals: {
       breakfast: { title: 'Fluffy Pancakes & Berries', cook: 'Mom', recipeId: 'rec-1', favorite: true, imageEmoji: '🥞' },
       lunch: { title: 'Veggie Ramen', cook: 'Kids', recipeId: 'rec-4', favorite: true, imageEmoji: '🍜' },
-      dinner: { title: 'Pork and Apple Burger (Hello Fresh)', cook: 'Family', recipeId: 'rec-pork-apple-burger', favorite: true, imageEmoji: '🍔' }
+      dinner: { title: 'Pork and Apple Burger (Hello Fresh)', cook: 'Family', recipeId: 'rec-pork-apple-burger', favorite: true, imageEmoji: '🍔', recipeUrl: 'https://www.hellofresh.com/' }
     }
   },
   {
@@ -420,7 +423,7 @@ export const INITIAL_DAYS = [
     meals: {
       breakfast: { title: 'Fluffy Pancakes & Berries', cook: 'Mom', recipeId: 'rec-1', favorite: true, imageEmoji: '🥞' },
       lunch: { title: 'Veggie Ramen', cook: 'Kids', recipeId: 'rec-4', favorite: true, imageEmoji: '🍜' },
-      dinner: { title: 'Maple-Curry Pork Chops (goodfood)', cook: 'Mom', recipeId: 'rec-maple-curry-pork-chops', favorite: true, imageEmoji: '🥩' }
+      dinner: { title: 'Maple-Curry Pork Chops (goodfood)', cook: 'Mom', recipeId: 'rec-maple-curry-pork-chops', favorite: true, imageEmoji: '🥩', recipeUrl: 'https://www.makegoodfood.ca/' }
     }
   }
 ];

@@ -48,8 +48,9 @@ export const PlannerProvider = ({ children }) => {
   // Quick Printable Modal visibility
   const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
 
-  // Recipe Photo Scanner Modal visibility
+  // Recipe Photo Scanner Modal visibility & Target Slot: { dayIndex, mealType }
   const [isScannerModalOpen, setIsScannerModalOpen] = useState(false);
+  const [scannerTargetSlot, setScannerTargetSlot] = useState(null);
 
   // Week Days Plan State
   const [weeklyPlan, setWeeklyPlan] = useState(() => {
@@ -135,6 +136,11 @@ export const PlannerProvider = ({ children }) => {
   const handleNextWeek = () => setWeekOffset((prev) => prev + 1);
   const handleResetWeek = () => setWeekOffset(0);
 
+  const openScanForSlot = (dayIndex, mealType) => {
+    setScannerTargetSlot({ dayIndex, mealType });
+    setIsScannerModalOpen(true);
+  };
+
   const updateMealInPlan = (dayIndex, mealType, newMeal) => {
     setWeeklyPlan((prev) =>
       prev.map((day) => {
@@ -203,7 +209,8 @@ export const PlannerProvider = ({ children }) => {
         cook: recipeWithId.defaultCook || 'Mom',
         recipeId: recipeWithId.id,
         favorite: true,
-        imageEmoji: recipeWithId.imageEmoji || '🍲'
+        imageEmoji: recipeWithId.imageEmoji || '🍲',
+        recipeUrl: recipeWithId.recipeUrl || null
       });
     }
 
@@ -269,6 +276,9 @@ export const PlannerProvider = ({ children }) => {
         setIsPrintModalOpen,
         isScannerModalOpen,
         setIsScannerModalOpen,
+        scannerTargetSlot,
+        setScannerTargetSlot,
+        openScanForSlot,
         weeklyPlan,
         recipes,
         familyMembers,

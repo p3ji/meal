@@ -1,6 +1,6 @@
 import React from 'react';
 import { usePlanner } from '../context/PlannerContext';
-import { Printer, Camera, ChevronLeft, ChevronRight, Utensils } from 'lucide-react';
+import { Printer, Camera, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export const Header = () => {
   const {
@@ -28,13 +28,8 @@ export const Header = () => {
       <div className="ghibli-title-wrapper">
         <div className="ghibli-wreath-left">🌿</div>
         <div className="ghibli-title-box">
-          <div className="totoro-icon-badge" title="Family Kitchen">
-            <div className="totoro-ears"><span></span><span></span></div>
-            <div className="totoro-face">
-              <span className="totoro-eye"></span>
-              <span className="totoro-nose"></span>
-              <span className="totoro-eye"></span>
-            </div>
+          <div className="ramen-brand-badge" title="Family Kitchen - Cozy Ramen Bowl">
+            <span className="ramen-badge-emoji">🍜</span>
           </div>
           <h1 className="ghibli-main-title">FAMILY KITCHEN</h1>
           <p className="ghibli-subtitle">Family Meal Planner & Recipe Collection</p>

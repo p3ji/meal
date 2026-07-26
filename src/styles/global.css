@@ -153,18 +153,20 @@ body {
   align-items: center;
 }
 
-.totoro-icon-badge {
-  width: 38px;
-  height: 38px;
-  background: #a3b18a;
-  border-radius: 50% 50% 45% 45%;
-  position: relative;
+.ramen-brand-badge {
+  width: 44px;
+  height: 44px;
+  background: #fce8cd;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 4px;
-  border: 2px solid #588157;
+  border: 2px solid #e07a5f;
+  box-shadow: 0 4px 10px rgba(224, 122, 95, 0.25);
+  font-size: 1.5rem;
 }
+
 
 .totoro-ears {
   position: absolute;

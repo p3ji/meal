@@ -1,0 +1,395 @@
+/* GHIBLI KITCHEN - GLOBAL DESIGN SYSTEM */
+
+:root {
+  --font-main: 'Fredoka', 'Quicksand', sans-serif;
+  --font-display: 'Comfortaa', cursive, sans-serif;
+
+  /* Colors */
+  --bg-sky: #f7f3ee;
+  --bg-card: #ffffff;
+  --text-main: #332d29;
+  --text-muted: #6e645e;
+  --border-wood: #c8b69f;
+
+  /* Breakfast Colors (Sage) */
+  --breakfast-bg: #d9e6d8;
+  --breakfast-banner: #7aa375;
+  --breakfast-dark: #3a5737;
+
+  /* Lunch Colors (Honey/Amber) */
+  --lunch-bg: #f9eacc;
+  --lunch-banner: #e5904d;
+  --lunch-dark: #7a3e14;
+
+  /* Dinner Colors (Twilight Blue) */
+  --dinner-bg: #1c2b4e;
+  --dinner-banner: #d97736;
+  --dinner-card: #273963;
+  --dinner-text: #e8ecf4;
+
+  /* Accents */
+  --accent-red: #e63946;
+  --accent-gold: #f4a261;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --shadow-soft: 0 4px 15px rgba(80, 60, 40, 0.08);
+  --shadow-card: 0 3px 8px rgba(0, 0, 0, 0.06);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: #e8f1ed;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.8) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(220, 240, 230, 0.6) 0%, transparent 50%),
+    linear-gradient(180deg, #e3f2fd 0%, #f7f3ee 40%, #eaf4ed 100%);
+  background-attachment: fixed;
+  color: var(--text-main);
+  min-height: 100vh;
+  padding-bottom: 90px; /* space for mobile bottom nav */
+  -webkit-font-smoothing: antialiased;
+}
+
+.app-root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* Ghibli Soot Sprites Animation */
+.soot-sprite {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background-color: #2b2b2b;
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  animation: floatSoot 4s ease-in-out infinite alternate;
+  z-index: 10;
+}
+
+.soot-1 {
+  top: 18px;
+  left: 24px;
+  animation-duration: 3.5s;
+}
+
+.soot-2 {
+  top: 40px;
+  right: 32px;
+  animation-duration: 4.2s;
+}
+
+.soot-eye {
+  width: 5px;
+  height: 5px;
+  background: white;
+  border-radius: 50%;
+  position: relative;
+}
+
+.soot-eye::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: black;
+  top: 1px;
+  left: 1px;
+  border-radius: 50%;
+}
+
+@keyframes floatSoot {
+  0% { transform: translateY(0px) rotate(0deg); }
+  100% { transform: translateY(-8px) rotate(10deg); }
+}
+
+@keyframes calciferFlicker {
+  0% { transform: scale(1) rotate(-3deg); }
+  50% { transform: scale(1.1) rotate(4deg); }
+  100% { transform: scale(1) rotate(-3deg); }
+}
+
+.calcifer-anim {
+  display: inline-block;
+  animation: calciferFlicker 1.5s infinite ease-in-out;
+}
+
+/* HEADER STYLING (Matching Reference Image) */
+.ghibli-header-container {
+  position: relative;
+  text-align: center;
+  margin-bottom: 20px;
+  padding-top: 10px;
+}
+
+.ghibli-title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.ghibli-wreath-left, .ghibli-wreath-right {
+  font-size: 2.2rem;
+  opacity: 0.85;
+}
+
+.ghibli-title-box {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.totoro-icon-badge {
+  width: 38px;
+  height: 38px;
+  background: #a3b18a;
+  border-radius: 50% 50% 45% 45%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+  border: 2px solid #588157;
+}
+
+.totoro-ears {
+  position: absolute;
+  top: -7px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 6px;
+}
+
+.totoro-ears span {
+  width: 6px;
+  height: 10px;
+  background: #a3b18a;
+  border-radius: 50% 50% 0 0;
+  border: 1.5px solid #588157;
+}
+
+.totoro-face {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.totoro-eye {
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: inset 1px 1px 0 black;
+}
+
+.totoro-nose {
+  width: 3px;
+  height: 2px;
+  background: #333;
+  border-radius: 50%;
+}
+
+.ghibli-main-title {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #2b2622;
+  text-shadow: 1px 2px 0px rgba(255, 255, 255, 0.9);
+}
+
+.ghibli-subtitle {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+/* WEEKLY PLAN SELECTOR BAR */
+.weekly-plan-selector-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: #fbf5ea;
+  border: 2.5px solid #c4ab80;
+  border-radius: 30px;
+  padding: 6px 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.nav-arrow-btn {
+  background: #ecdcb9;
+  border: 1.5px solid #b39b6b;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #5c4d32;
+  transition: transform 0.15s, background 0.15s;
+}
+
+.nav-arrow-btn:hover {
+  transform: scale(1.1);
+  background: #dfca9f;
+}
+
+.weekly-plan-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.weekly-plan-title-text {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #4a3c27;
+  letter-spacing: 1px;
+}
+
+.week-dates-highlight {
+  color: #b5651d;
+  background: #f3e6cf;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+/* DESKTOP & MOBILE NAVIGATION BAR */
+.ghibli-nav-bar {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  width: calc(100% - 32px);
+  max-width: 540px;
+}
+
+.nav-items-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 2px solid #d4c5b1;
+  border-radius: 40px;
+  padding: 8px 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.ghibli-nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+  color: #7a7067;
+}
+
+.ghibli-nav-btn.active {
+  background: #f4ece1;
+  transform: translateY(-2px);
+}
+
+.nav-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* HEADER CONTROLS ROW & QUICK PRINT */
+.header-controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.quick-print-header-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #e07a5f 0%, #d97736 100%);
+  color: #ffffff;
+  border: 2px solid #9e4b33;
+  border-radius: 24px;
+  padding: 8px 18px;
+  font-family: var(--font-main);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(224, 122, 95, 0.25);
+  transition: all 0.2s ease;
+}
+
+.quick-print-header-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 16px rgba(224, 122, 95, 0.35);
+  background: linear-gradient(135deg, #e5876e 0%, #e07a5f 100%);
+}
+
+.planner-sub-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(6px);
+  border: 1.5px solid #d4c5b3;
+  border-radius: 16px;
+  padding: 8px 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.planner-view-info {
+  font-size: 0.9rem;
+  color: #52463a;
+}
+
+.btn-print-compact {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #2a9d8f;
+  color: #ffffff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 12px;
+  font-family: var(--font-main);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.btn-print-compact:hover {
+  background: #238579;
+}
+

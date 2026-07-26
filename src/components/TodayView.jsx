@@ -78,7 +78,6 @@ export const TodayView = () => {
         <div className="today-hero-text">
           <span className="today-pill">☀️ TODAY'S MENU</span>
           <h2>{todayDateInfo?.dayName || todayPlan.dayName}, {todayDateInfo?.monthName} {todayDateInfo?.dateNum}</h2>
-          <p className="today-tagline">"Food cooked with love brings magic to the home!" ✨</p>
         </div>
         <div className="today-hero-illustration">
           <span className="hero-emoji calcifer-anim">🔥</span>

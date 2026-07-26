@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createWorker } from 'tesseract.js';
 import { usePlanner } from '../context/PlannerContext';
-import { Camera, Upload, Sparkles, Check, RefreshCw, Clock, ChefHat, ShoppingBag, Link as LinkIcon, X } from 'lucide-react';
+import { Camera, Upload, Sparkles, Check, RefreshCw, Clipboard, Link as LinkIcon, X } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export const RecipeScannerModal = ({ isOpen, onClose }) => {
@@ -10,10 +10,16 @@ export const RecipeScannerModal = ({ isOpen, onClose }) => {
   const fileInputRef = useRef(null);
   const cameraInputRef = useRef(null);
 
+  // Active Tab: 'photo' or 'paste'
+  const [activeTab, setActiveTab] = useState('photo');
+
   const [imagePreview, setImagePreview] = useState(null);
   const [isScanning, setIsScanning] = useState(false);
   const [scanProgress, setScanProgress] = useState(0);
   const [scanStatusText, setScanStatusText] = useState('');
+
+  // Paste Text Input
+  const [rawPastedText, setRawPastedText] = useState('');
 
   // Scanned / Editable Recipe Form State
   const [scannedData, setScannedData] = useState(null);
@@ -50,7 +56,7 @@ export const RecipeScannerModal = ({ isOpen, onClose }) => {
       .map((l) => l.trim())
       .filter((l) => l.length > 0);
 
-    let parsedTitle = 'Scanned Recipe';
+    let parsedTitle = '';
     let parsedPrep = '15m';
     let parsedCook = '20m';
     let parsedCategory = 'Dinner';
@@ -63,11 +69,9 @@ export const RecipeScannerModal = ({ isOpen, onClose }) => {
     lines.forEach((line, idx) => {
       const lower = line.toLowerCase();
 
-      // Title detection (first 2-3 prominent lines)
-      if (idx === 0 || (idx === 1 && parsedTitle === 'Scanned Recipe')) {
-        if (!lower.includes('ingredient') && !lower.includes('instruction') && line.length > 3) {
-          parsedTitle = line.replace(/^[^a-zA-Z0-9]+/, '');
-        }
+      // Title detection (first non-header prominent line)
+      if (!parsedTitle && !lower.includes('ingredient') && !lower.includes('instruction') && !lower.includes('goodfood') && !lower.includes('hellofresh')) {
+        parsedTitle = line.replace(/^[^a-zA-Z0-9]+/, '');
       }
 
       // Times detection
@@ -80,9 +84,10 @@ export const RecipeScannerModal = ({ isOpen, onClose }) => {
       }
 
       // Emoji selection based on keywords
-      if (lower.includes('pork') || lower.includes('steak') || lower.includes('beef')) parsedEmoji = '🥩';
+      if (lower.includes('pork') || lower.includes('chop')) parsedEmoji = '🥩';
       else if (lower.includes('burger')) parsedEmoji = '🍔';
       else if (lower.includes('stew') || lower.includes('soup')) parsedEmoji = '🍲';
+      else if (lower.includes('beef') || lower.includes('meatball')) parsedEmoji = '🧆';
       else if (lower.includes('chicken')) parsedEmoji = '🍗';
       else if (lower.includes('salmon') || lower.includes('fish')) parsedEmoji = '🐟';
       else if (lower.includes('pancake') || lower.includes('toast')) parsedEmoji = '🥞';
@@ -92,7 +97,7 @@ export const RecipeScannerModal = ({ isOpen, onClose }) => {
         currentSection = 'ingredients';
         return;
       }
-      if (lower.includes('instruction') || lower.includes('direction') || lower.includes('step') || lower.includes('method')) {
+      if (lower.includes('instruction') || lower.includes('direction') || lower.includes('step') || lower.includes('method') || lower.includes('prep')) {
         currentSection = 'instructions';
         return;
       }
@@ -103,7 +108,7 @@ export const RecipeScannerModal = ({ isOpen, onClose }) => {
       } else if (currentSection === 'instructions') {
         rawInstructions.push(line.replace(/^\d+[\.\)]\s*/, ''));
       } else {
-        // Fallback detection for bullet points or numbered lines
+        // Heuristic detection
         if (line.match(/^[-•*]\s+/)) {
           rawIngredients.push(line.replace(/^[-•*]\s*/, ''));
         } else if (line.match(/^\d+[\.\)]\s+/)) {
@@ -114,40 +119,83 @@ export const RecipeScannerModal = ({ isOpen, onClose }) => {
 
     const ingText = rawIngredients.length > 0
       ? rawIngredients.join(', ')
-      : 'Pork Chops, Garlic, Olive Oil, Salt, Black Pepper';
+      : lines.slice(1, 6).join(', ');
 
     const instText = rawInstructions.length > 0
       ? rawInstructions.join('\n')
-      : 'Step 1: Prep ingredients\nStep 2: Cook over medium heat until golden\nStep 3: Serve warm!';
+      : lines.slice(6).join('\n') || 'Step 1: Prep ingredients\nStep 2: Cook over medium heat until golden\nStep 3: Serve warm!';
 
     return {
-      title: parsedTitle,
+      title: parsedTitle || 'New Scanned Dish',
       prepTime: parsedPrep,
       cookTime: parsedCook,
       category: parsedCategory,
       emoji: parsedEmoji,
-      description: `Scanned recipe card (${parsedTitle}).`,
+      description: `Scanned recipe (${parsedTitle || 'Custom Dish'}).`,
       ingredientsStr: ingText,
       instructionsStr: instText
     };
   };
 
+  // Image Contrast Enhancement Canvas Helper
+  const preprocessImageForOCR = (file) => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Scale to optimal dimensions
+        const maxDim = 1500;
+        let scale = 1;
+        if (img.width > maxDim || img.height > maxDim) {
+          scale = Math.min(maxDim / img.width, maxDim / img.height);
+        }
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        // Enhance contrast
+        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imgData.data;
+        for (let i = 0; i < data.length; i += 4) {
+          const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+          const v = avg > 140 ? 255 : (avg < 80 ? 0 : avg);
+          data[i] = v;
+          data[i + 1] = v;
+          data[i + 2] = v;
+        }
+        ctx.putImageData(imgData, 0, 0);
+
+        canvas.toBlob((blob) => {
+          resolve(blob || file);
+        }, 'image/png');
+      };
+      img.onerror = () => resolve(file);
+      img.src = url;
+    });
+  };
+
   const processImageFile = async (file) => {
     if (!file) return;
 
-    // Show image preview
     const objectUrl = URL.createObjectURL(file);
     setImagePreview(objectUrl);
     setIsScanning(true);
-    setScanProgress(10);
-    setScanStatusText('Initializing OCR Scanner engine...');
+    setScanProgress(15);
+    setScanStatusText('Enhancing recipe photo contrast...');
 
     try {
-      const worker = await createWorker('eng');
-      setScanProgress(40);
-      setScanStatusText('Reading text from recipe photo...');
+      const processedBlob = await preprocessImageForOCR(file);
+      setScanProgress(35);
+      setScanStatusText('Reading text from recipe card...');
 
-      const ret = await worker.recognize(file);
+      const worker = await createWorker('eng');
+      setScanProgress(60);
+
+      const ret = await worker.recognize(processedBlob);
       setScanProgress(85);
       setScanStatusText('Parsing ingredients & instructions...');
 
@@ -170,8 +218,40 @@ export const RecipeScannerModal = ({ isOpen, onClose }) => {
     } catch (err) {
       console.error('OCR Error:', err);
       setIsScanning(false);
-      alert('Unable to process photo. Please try uploading a clearer image or enter details manually.');
+      // Open form anyway so user can type or paste easily
+      const fallback = {
+        title: 'New Scanned Recipe',
+        prepTime: '15m',
+        cookTime: '20m',
+        category: 'Dinner',
+        emoji: '🥩',
+        description: 'Custom recipe.',
+        ingredientsStr: '',
+        instructionsStr: ''
+      };
+      setScannedData(fallback);
+      setTitle(fallback.title);
+      setIngredientsStr('');
+      setInstructionsStr('');
     }
+  };
+
+  const handlePastedTextParse = (e) => {
+    e.preventDefault();
+    if (!rawPastedText.trim()) return;
+
+    const extracted = parseRecipeText(rawPastedText);
+    setScannedData(extracted);
+    setTitle(extracted.title);
+    setPrepTime(extracted.prepTime);
+    setCookTime(extracted.cookTime);
+    setCategory(extracted.category);
+    setEmoji(extracted.emoji);
+    setDescription(extracted.description);
+    setIngredientsStr(extracted.ingredientsStr);
+    setInstructionsStr(extracted.instructionsStr);
+
+    confetti({ particleCount: 30, spread: 50 });
   };
 
   const handleFileChange = (e) => {
@@ -218,7 +298,7 @@ export const RecipeScannerModal = ({ isOpen, onClose }) => {
       isFavorite: true,
       imageEmoji: emoji,
       recipeUrl: recipeUrl.trim() || null,
-      description: description || `Delicious scanned ${title} recipe.`,
+      description: description || `Delicious ${title} recipe.`,
       ingredients: parsedIngredients.length > 0 ? parsedIngredients : [{ name: title, amount: '1', category: 'Pantry' }],
       instructions: parsedInstructions.length > 0 ? parsedInstructions : ['Prepare and cook with care!']
     };
@@ -240,6 +320,7 @@ export const RecipeScannerModal = ({ isOpen, onClose }) => {
     setIsScanning(false);
     setScanProgress(0);
     setRecipeUrl('');
+    setRawPastedText('');
   };
 
   return (
@@ -250,23 +331,43 @@ export const RecipeScannerModal = ({ isOpen, onClose }) => {
           <div className="scanner-modal-title">
             <Camera size={24} color="#e07a5f" />
             <div>
-              <h3>📷 Recipe Photo Scanner</h3>
-              <p>Snap a photo of your GoodFood or HelloFresh recipe card to auto-import & update your shopping list!</p>
+              <h3>📷 Recipe Photo & Text Importer</h3>
+              <p>Snap a photo of your recipe card or paste text to auto-populate your recipe & shopping list!</p>
             </div>
           </div>
           <button className="close-modal-btn" onClick={onClose}>✕</button>
         </div>
 
-        {/* STEP 1: CAPTURE / UPLOAD IMAGE */}
+        {/* MODE TAB SELECTOR (PHOTO vs COPY-PASTE) */}
         {!scannedData && !isScanning && (
+          <div className="scanner-tab-selector">
+            <button
+              className={`scanner-tab-btn ${activeTab === 'photo' ? 'active' : ''}`}
+              onClick={() => setActiveTab('photo')}
+            >
+              <Camera size={16} />
+              <span>Snap / Upload Photo</span>
+            </button>
+
+            <button
+              className={`scanner-tab-btn ${activeTab === 'paste' ? 'active' : ''}`}
+              onClick={() => setActiveTab('paste')}
+            >
+              <Clipboard size={16} />
+              <span>Paste Recipe Text</span>
+            </button>
+          </div>
+        )}
+
+        {/* STEP 1A: PHOTO UPLOAD TAB */}
+        {!scannedData && !isScanning && activeTab === 'photo' && (
           <div className="scanner-upload-step">
             <div className="scanner-dropzone">
               <span className="dropzone-icon">📸</span>
               <h4>Take a Photo or Select Image</h4>
-              <p>Upload a clear photo of your recipe card, meal kit instructions, or cookbook page.</p>
+              <p>Upload a clear photo of your GoodFood or HelloFresh recipe card.</p>
 
               <div className="dropzone-actions-row">
-                {/* Camera Capture (Mobile & Webcams) */}
                 <button
                   type="button"
                   className="btn-scanner-action primary"
@@ -284,7 +385,6 @@ export const RecipeScannerModal = ({ isOpen, onClose }) => {
                   onChange={handleFileChange}
                 />
 
-                {/* Upload File */}
                 <button
                   type="button"
                   className="btn-scanner-action secondary"
@@ -305,6 +405,27 @@ export const RecipeScannerModal = ({ isOpen, onClose }) => {
           </div>
         )}
 
+        {/* STEP 1B: PASTE TEXT TAB */}
+        {!scannedData && !isScanning && activeTab === 'paste' && (
+          <form onSubmit={handlePastedTextParse} className="paste-text-step">
+            <div className="form-group">
+              <label>Paste Recipe Text (from email, website, or note)</label>
+              <textarea
+                rows={6}
+                required
+                placeholder="Paste recipe title, ingredients, and instructions here..."
+                value={rawPastedText}
+                onChange={(e) => setRawPastedText(e.target.value)}
+                style={{ fontFamily: 'inherit' }}
+              />
+            </div>
+            <button type="submit" className="btn-submit" style={{ width: '100%', padding: '12px' }}>
+              <Sparkles size={18} />
+              <span>Auto-Parse Recipe Text ✨</span>
+            </button>
+          </form>
+        )}
+
         {/* STEP 2: SCANNING IN PROGRESS */}
         {isScanning && (
           <div className="scanner-progress-box">
@@ -316,7 +437,7 @@ export const RecipeScannerModal = ({ isOpen, onClose }) => {
             <div className="progress-spinner-wrapper">
               <RefreshCw size={32} className="spin-anim" color="#e07a5f" />
             </div>
-            <h4>Reading Recipe Photo...</h4>
+            <h4>Processing Recipe...</h4>
             <p>{scanStatusText}</p>
 
             <div className="scanner-progress-bar-bg">
@@ -329,21 +450,23 @@ export const RecipeScannerModal = ({ isOpen, onClose }) => {
         {scannedData && !isScanning && (
           <form onSubmit={handleSaveScannedRecipe} className="scanned-recipe-form">
             <div className="scanned-preview-banner">
-              <div className="preview-mini-thumb">
-                <img src={imagePreview} alt="Scanned Recipe" />
-              </div>
+              {imagePreview && (
+                <div className="preview-mini-thumb">
+                  <img src={imagePreview} alt="Scanned Recipe" />
+                </div>
+              )}
               <div className="preview-banner-text">
-                <span className="scanned-badge">✨ OCR SCAN COMPLETE</span>
+                <span className="scanned-badge">✨ RECIPE READY FOR REVIEW</span>
                 <h4>Review & Add to Family Kitchen</h4>
               </div>
               <button
                 type="button"
                 className="btn-rescan"
                 onClick={resetState}
-                title="Scan another photo"
+                title="Start Over"
               >
                 <RefreshCw size={14} />
-                <span>Rescan</span>
+                <span>Start Over</span>
               </button>
             </div>
 
@@ -409,7 +532,7 @@ export const RecipeScannerModal = ({ isOpen, onClose }) => {
             </div>
 
             <div className="form-group">
-              <label>Scanned Ingredients (comma separated)</label>
+              <label>Ingredients (comma separated)</label>
               <textarea
                 rows={3}
                 value={ingredientsStr}

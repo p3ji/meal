@@ -1732,6 +1732,46 @@
   color: #6e645e;
 }
 
+.scanner-tab-selector {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  background: #f4ece1;
+  padding: 4px;
+  border-radius: 14px;
+  border: 1.5px solid #d4c5b3;
+}
+
+.scanner-tab-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #6e6052;
+  transition: all 0.15s ease;
+}
+
+.scanner-tab-btn.active {
+  background: #ffffff;
+  color: #2b241c;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.paste-text-step {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+
 .scanner-dropzone {
   background: #faf6f0;
   border: 2.5px dashed #c4b5a0;

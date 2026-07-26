@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { usePlanner } from '../context/PlannerContext';
-import { Search, Plus, Heart, Clock, Users, BookOpen, Star, Sparkles } from 'lucide-react';
+import { Search, Plus, Heart, Clock, Users, BookOpen, Camera, Sparkles } from 'lucide-react';
 
 export const RecipeBook = () => {
-  const { recipes, toggleRecipeFavorite, setSelectedRecipeModal, addRecipe } = usePlanner();
+  const { recipes, toggleRecipeFavorite, setSelectedRecipeModal, addRecipe, setIsScannerModalOpen } = usePlanner();
 
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
@@ -77,13 +77,20 @@ export const RecipeBook = () => {
       <div className="recipe-book-header">
         <div className="recipe-title-group">
           <h2>📖 Family Kitchen Recipe Collection</h2>
-          <p>Explore comforting family recipes or add your favorite dishes!</p>
+          <p>Explore comforting family recipes, scan recipe card photos, or add your favorite dishes!</p>
         </div>
 
-        <button className="add-recipe-btn" onClick={() => setShowAddForm(true)}>
-          <Plus size={18} />
-          <span>Add New Recipe</span>
-        </button>
+        <div className="recipe-header-actions">
+          <button className="scan-recipe-btn" onClick={() => setIsScannerModalOpen(true)}>
+            <Camera size={18} />
+            <span>Scan Recipe Photo</span>
+          </button>
+
+          <button className="add-recipe-btn" onClick={() => setShowAddForm(true)}>
+            <Plus size={18} />
+            <span>Add New Recipe</span>
+          </button>
+        </div>
       </div>
 
       {/* Search & Filter Pills */}

@@ -48,13 +48,15 @@ export const PlannerProvider = ({ children }) => {
   // Quick Printable Modal visibility
   const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
 
+  // Recipe Photo Scanner Modal visibility
+  const [isScannerModalOpen, setIsScannerModalOpen] = useState(false);
+
   // Week Days Plan State
   const [weeklyPlan, setWeeklyPlan] = useState(() => {
     const saved = localStorage.getItem('family_kitchen_weekly_plan');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        // Ensure July 27 recipes are reflected if user had older cache
         const hasJuly27Pork = parsed.some((d) => d.meals?.dinner?.recipeId === 'rec-maple-curry-pork-chops');
         if (hasJuly27Pork) return parsed;
       } catch (e) {
@@ -185,6 +187,27 @@ export const PlannerProvider = ({ children }) => {
     };
     setRecipes((prev) => [recipeWithId, ...prev]);
     confetti({ particleCount: 40, spread: 60, origin: { y: 0.7 } });
+    return recipeWithId;
+  };
+
+  const addScannedRecipeAndAssign = (scannedRecipe, dayIndex = null, mealType = null) => {
+    const recipeWithId = {
+      ...scannedRecipe,
+      id: `rec-scan-${Date.now()}`
+    };
+    setRecipes((prev) => [recipeWithId, ...prev]);
+
+    if (dayIndex !== null && dayIndex !== undefined && mealType) {
+      updateMealInPlan(dayIndex, mealType, {
+        title: recipeWithId.title,
+        cook: recipeWithId.defaultCook || 'Mom',
+        recipeId: recipeWithId.id,
+        favorite: true,
+        imageEmoji: recipeWithId.imageEmoji || '🍲'
+      });
+    }
+
+    confetti({ particleCount: 70, spread: 80, origin: { y: 0.6 } });
   };
 
   const toggleShoppingCheck = (itemId) => {
@@ -244,6 +267,8 @@ export const PlannerProvider = ({ children }) => {
         weekRangeText,
         isPrintModalOpen,
         setIsPrintModalOpen,
+        isScannerModalOpen,
+        setIsScannerModalOpen,
         weeklyPlan,
         recipes,
         familyMembers,
@@ -257,6 +282,7 @@ export const PlannerProvider = ({ children }) => {
         toggleFavoriteMeal,
         toggleRecipeFavorite,
         addRecipe,
+        addScannedRecipeAndAssign,
         toggleShoppingCheck,
         addCustomShoppingItem,
         removeCustomShoppingItem,

@@ -331,6 +331,36 @@ body {
   margin-top: 4px;
 }
 
+.header-action-buttons-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.quick-scan-header-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #81b29a 0%, #2a9d8f 100%);
+  color: #ffffff;
+  border: 2px solid #1f7369;
+  border-radius: 24px;
+  padding: 8px 18px;
+  font-family: var(--font-main);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(42, 157, 143, 0.25);
+  transition: all 0.2s ease;
+}
+
+.quick-scan-header-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 16px rgba(42, 157, 143, 0.35);
+  background: linear-gradient(135deg, #8dc3ab 0%, #35b3a3 100%);
+}
+
 .quick-print-header-btn {
   display: inline-flex;
   align-items: center;
@@ -392,4 +422,5 @@ body {
 .btn-print-compact:hover {
   background: #238579;
 }
+
 

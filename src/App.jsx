@@ -9,6 +9,7 @@ import { ShoppingList } from './components/ShoppingList';
 import { FamilyProfiles } from './components/FamilyProfiles';
 import { MealEditModal, RecipeDetailModal } from './components/MealEditModal';
 import { PrintableModal } from './components/PrintableModal';
+import { RecipeScannerModal } from './components/RecipeScannerModal';
 import { PwaInstallBanner } from './components/PwaInstallBanner';
 
 import './styles/global.css';
@@ -29,7 +30,12 @@ const MainContent = () => {
 };
 
 const AppModals = () => {
-  const { isPrintModalOpen, setIsPrintModalOpen } = usePlanner();
+  const {
+    isPrintModalOpen,
+    setIsPrintModalOpen,
+    isScannerModalOpen,
+    setIsScannerModalOpen
+  } = usePlanner();
 
   return (
     <>
@@ -38,6 +44,10 @@ const AppModals = () => {
       <PrintableModal
         isOpen={isPrintModalOpen}
         onClose={() => setIsPrintModalOpen(false)}
+      />
+      <RecipeScannerModal
+        isOpen={isScannerModalOpen}
+        onClose={() => setIsScannerModalOpen(false)}
       />
     </>
   );

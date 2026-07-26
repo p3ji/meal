@@ -1,6 +1,6 @@
 import React from 'react';
 import { usePlanner } from '../context/PlannerContext';
-import { Printer, ChevronLeft, ChevronRight, Utensils } from 'lucide-react';
+import { Printer, Camera, ChevronLeft, ChevronRight, Utensils } from 'lucide-react';
 
 export const Header = () => {
   const {
@@ -8,7 +8,8 @@ export const Header = () => {
     handlePrevWeek,
     handleNextWeek,
     handleResetWeek,
-    setIsPrintModalOpen
+    setIsPrintModalOpen,
+    setIsScannerModalOpen
   } = usePlanner();
 
   return (
@@ -41,7 +42,7 @@ export const Header = () => {
         <div className="ghibli-wreath-right">🌿</div>
       </div>
 
-      {/* Week Selector Bar & Quick Print Action */}
+      {/* Week Selector Bar & Quick Print / Scan Actions */}
       <div className="header-controls-row">
         <div className="weekly-plan-selector-bar">
           <button className="nav-arrow-btn" onClick={handlePrevWeek} title="Previous Week">
@@ -63,15 +64,26 @@ export const Header = () => {
           </button>
         </div>
 
-        {/* Quick Printable Version Button */}
-        <button
-          className="quick-print-header-btn"
-          onClick={() => setIsPrintModalOpen(true)}
-          title="Open Quick Printable Version"
-        >
-          <Printer size={18} />
-          <span>Quick Printable Version</span>
-        </button>
+        {/* Action Buttons */}
+        <div className="header-action-buttons-group">
+          <button
+            className="quick-scan-header-btn"
+            onClick={() => setIsScannerModalOpen(true)}
+            title="Scan Recipe Card Photo"
+          >
+            <Camera size={18} />
+            <span>Scan Recipe Photo</span>
+          </button>
+
+          <button
+            className="quick-print-header-btn"
+            onClick={() => setIsPrintModalOpen(true)}
+            title="Open Quick Printable Version"
+          >
+            <Printer size={18} />
+            <span>Quick Printable Version</span>
+          </button>
+        </div>
       </div>
     </header>
   );
